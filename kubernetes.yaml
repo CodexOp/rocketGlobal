@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rckg-dapp-staking
+  namespace: {{namespace}}
+  labels:
+    app: rckg-dapp-staking
+  annotations:
+    service.beta.kubernetes.io/do-loadbalancer-algorithm: "least_connections"
+
+spec:
+  selector:
+    app: rckg-dapp-staking
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 3000
+      name: http
+  type: ClusterIP
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rckg-dapp-staking
+  namespace: {{namespace}}
+  labels:
+    app: rckg-dapp-staking
+spec:
+  replicas: {{replicas}}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: rckg-dapp-staking
+  template:
+    metadata:
+      labels:
+        app: rckg-dapp-staking
+    spec:
+      imagePullSecrets:
+        - name: docker
+      containers:
+        - name: rckg-dapp-staking
+          image: {{image}}
+          imagePullPolicy: Always
+          envFrom:
+          - secretRef:
+              name: database
+          - secretRef:
+              name: typeform
+          - secretRef:
+              name: app
+          - secretRef:
+              name: identityservice
+          ports:
+          - containerPort: 3000
+            protocol: TCP
