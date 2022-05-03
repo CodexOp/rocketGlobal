@@ -277,7 +277,7 @@ function App() {
               <button className='stake_first buttons_stake' onClick={approve} >Approve</button>
               <button className='stake_first buttons_stake' onClick={stakeTokens} >Stake</button>
               <button className='unstake buttons_stake' onClick={unstakeTokens} >UnStake</button>
-              <button className='emergency buttons_stake' onClick={emergencyWithdraw} >Emergency Withdrawal</button>
+              <button className='emergency buttons_stake' onClick={emergencyWithdraw} >Emergency Withdraw</button>
             </div>
 
             <div>

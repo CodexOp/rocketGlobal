@@ -202,12 +202,18 @@ padding: 20px 10px;
 
 .threebuttons{
   display: flex;
-  justify-content: left;
-  margin:20px 0;
-  width: 410px;
+  justify-content: space-between;
+  margin:30px 0;
+  width: 420px;
   flex-wrap: wrap;
 
 }
+
+
+.stak_info label{
+  font-size: 23px;
+}
+
 
 .buttons_stake{
   border: 1px solid rgba(0, 0, 0,0.2);
@@ -229,12 +235,12 @@ padding: 20px 10px;
 
 .unstake{
   width: 200px;
+  margin-top: 7px;
   background: #56BC7C;
-  margin-left: 10px;
 }
 
 .emergency{
-  width: 100%;
+  width: 200px;
   margin-top: 7px;
 background: #FF5C5D;
 }
@@ -268,6 +274,9 @@ background: #FF5C5D;
   }
 
 
+    .emergency{
+      width: 49%;
+    }
 
   .landing p{
    margin-top:20px
@@ -299,6 +308,10 @@ background: #FF5C5D;
   margin-top: 30px;
 }
 
+.stak_info label{
+  font-size: 20px;
+}
+
 }
 
 
@@ -311,4 +324,9 @@ background: #FF5C5D;
   .buttons_stake{
     font-size: 14px !important;
   }
+
+  .stak_info label{
+    font-size: 16px;
+  }
+  
 }
