@@ -1,0 +1,9 @@
+{
+    "rpcUrl": "https://bsc-dataseed1.defibit.io/",
+    "stakingAddress": "0xF20e092C3763F600C1Ee71B0B7046B69bd0D548C",
+    "token":"0x7658604d32a0e60D08dd77A60413897E5CeFD51f",
+    "router": "0x10ED43C718714eb63d5aA57B78B54704E256024E",
+    "wbnb": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+    "busd": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+    "dead": "0x000000000000000000000000000000000000dEaD"
+}
