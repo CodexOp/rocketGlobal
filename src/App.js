@@ -279,7 +279,7 @@ function App() {
               <button className='unstake buttons_stake' onClick={unstakeTokens} >UnStake</button>
               <button className='emergency buttons_stake' onClick={emergencyWithdraw} >Emergency Withdraw</button>
             </div>
-
+{/* 
             <div>
             <label>Total Amount Staked -</label> &nbsp;&nbsp;
             <label className='stak_value'>$7382673</label>
@@ -295,7 +295,7 @@ function App() {
             <div>
             <label>Minimum Amount For Staking -</label> &nbsp;&nbsp;
             <label className='stak_value'>$100</label>            
-            </div>
+            </div> */}
           
           </div>
         </div>
