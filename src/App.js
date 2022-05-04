@@ -19,9 +19,9 @@ function App() {
   let [amount, setAmount] = React.useState(0);
 
   const poolData= [
-    {name: "BRONZE",apy: "25", lock:"7", maxStake: "100", fee: "25"},
-    {name: "GOLD",apy: "25", lock:"7", maxStake: "100", fee: "25"},
-    {name: "DIAMOND",apy: "25", lock:"7", maxStake: "100", fee: "25"}
+    {name: "DIAMOND",apy: "120", lock:"90", maxStake: "200,000", fee: "25", maxPool:"15m"},
+    {name: "GOLD",apy: "60", lock:"60", maxStake: "1,000,000", fee: "25", maxPool:"20m"},
+    {name: "BRONZE",apy: "20", lock:"30", maxStake: "2,000,000", fee: "25", maxPool:"20m"}
   ]
 
   let [_signer, _setSigner]= React.useState(0);
@@ -252,9 +252,9 @@ function App() {
             <input type='string'/>
             <div className='inputpart1'>
               <select onChange={(e)=>onclickhandlers(e)}>
-                <option value="0" >Bronze</option>
+                <option value="0" >Diaomand</option>
                 <option value="1" >Gold</option>
-                <option value="2" >Diaomand</option>
+                <option value="2" >Bronze</option>
               </select>
             </div>
             </div>
@@ -303,6 +303,7 @@ function App() {
           <div className='detail_box'>
             <h2>Details - {poolData[poolId].name} </h2>
             <p>{poolData[poolId].apy}% APY</p>
+            <p>{poolData[poolId].maxPool} RCKC</p>
             <p>{poolData[poolId].lock} Days Minimum Duration</p>
             <p>{poolData[poolId].maxStake} RCKC  Maximum Staking</p>
             <p>{poolData[poolId].fee}% Early-Withdrawal Fee</p>

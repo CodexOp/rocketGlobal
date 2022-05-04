@@ -154,6 +154,7 @@ outline: none;
   background: #DBFFF5;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 10px;
+width: 60% !important;
 padding: 20px 10px;
 }
 
