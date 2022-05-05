@@ -12,7 +12,7 @@ definitions:
 
 pipelines:
   branches:
-    ma:
+    main:
       - step:
           caches:
             - docker
