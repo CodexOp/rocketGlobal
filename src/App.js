@@ -229,7 +229,7 @@ function App() {
 
       {/* Whitelist */}
       <div className='stak_whitelist'>
-        <p className='whitelist'>Your Wallet is <span className='whitelist-text'>{`whitlisted`}</span> for this staking, stak your token and earn nasty profit</p>
+        {/* <p className='whitelist'>Your Wallet is <span className='whitelist-text'>{`whitlisted`}</span> for this staking, stak your token and earn nasty profit</p> */}
         </div>
 
 
@@ -252,7 +252,7 @@ function App() {
             <input type='string'/>
             <div className='inputpart1'>
               <select onChange={(e)=>onclickhandlers(e)}>
-                <option value="0" >Diaomand</option>
+                    <option value="0" >Diamond</option>
                 <option value="1" >Gold</option>
                 <option value="2" >Bronze</option>
               </select>
