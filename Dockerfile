@@ -1,5 +1,5 @@
 # base image
-FROM node:alpine
+FROM node:16-alpine3.12
 
 # create & set working directory
 RUN mkdir -p /usr/src
@@ -12,7 +12,7 @@ COPY .env.example /usr/src/.env
 # install dependencies
 RUN export NODE_OPTIONS=--openssl-legacy-provider
 
-RUN npm install --legacy-peer-deps
+RUN npm install 
 
 # start app
 RUN npm run build
