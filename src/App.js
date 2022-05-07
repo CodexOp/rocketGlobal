@@ -18,6 +18,9 @@ function App() {
   let [whitelistedAddresses, setWalletAddresses] = React.useState([0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   let [amount, setAmount] = React.useState(0);
   let [balance, setBalance] = React.useState(0);
+  let [stakingBalance, setStockingBalance] = React.useState(0);
+  let [currentPoolSize, setCurrentPoolSize] = React.useState(0);
+  let [timeLock, setTimeLock] = React.useState(0);
 
   const poolData= [
     {name: "DIAMOND",apy: "120", lock:"90", maxStake: "200,000", fee: "25", maxPool:"15m"},
@@ -78,6 +81,9 @@ function App() {
       var _poolInfo = await staking.poolInfo(poolId);
       console.log ("Pool Info: ", _poolInfo);
       setPoolInfo(_poolInfo);
+      let temp = ethers.utils.formatEther(_poolInfo[2].toString()).toString()
+      console.log ("temp: ", temp, " value: ", _poolInfo[2].toString());
+      setCurrentPoolSize(temp);
     }catch(err){
       console.log(err);
     }
@@ -95,7 +101,12 @@ function App() {
       let _wallet = _signer.getAddress();      
       let _userInfo = await staking.userInfo( poolId, _wallet);
       console.log ("USER Info: ", _userInfo);
+      setStockingBalance(ethers.utils.formatEther(_userInfo[0]).toString())
       setUserInfo(_userInfo);
+      let _timestamp = parseInt(_userInfo[1].toString())* 1000;
+      let _time = new Date(_timestamp);
+      if (_timestamp >0) setTimeLock(_time);
+      else setTimeLock("- Not staked yet");
     }catch(err){
       console.log("User error", err);
     }
@@ -129,6 +140,8 @@ function App() {
       let _amount = ethers.utils.parseEther(amount.toString());
       // console.log (_amount)
       let tx = await staking.stakeTokens(poolId, _amount);
+      getPoolInfo();
+      getUserInfo();
     }catch (error) {
       alert(error.data.message);
       // console.log (error)
@@ -192,7 +205,6 @@ function App() {
       let decimals = await token.decimals();
       decimals = parseInt(decimals.toString());
       balance = ethers.utils.formatUnits(balance, decimals);
-      console.log ("balance", balance.toString());
       return parseFloat(balance.toString()).toFixed(2);
     } catch (err){
       console.log (err, tokenAddress);
@@ -265,9 +277,9 @@ function App() {
 
 
       {/* Whitelist */}
-      <div className='stak_whitelist'>
+      {/* <div className='stak_whitelist'>
         <p className='whitelist'>Your Wallet is <span className='whitelist-text'>{`whitlisted`}</span> for this staking, stak your token and earn nasty profit</p>
-        </div>
+        </div> */}
 
 
       {/* Staking Part */}
@@ -318,19 +330,27 @@ function App() {
 
             <div>
             <label>Your Balance -</label> &nbsp;&nbsp;
-            <label className='stak_value'>{balance}RCKC</label>
+            <label className='stak_value'>{parseFloat(balance).toLocaleString()}RCKC</label>
             </div>
             <div>
             <label>Your staking balance -</label> &nbsp;&nbsp;
-            <label className='stak_value'>{ (userInfo[0] && userInfo[0] !=0 )? ethers.utils.parseEther(userInfo[0]) : 0} RCKC</label>
+            <label className='stak_value'>{ stakingBalance} RCKC</label>
             </div>
             <div>
-            {/* <label>Pool Collections</label>&nbsp;&nbsp; 
-            <label className='stak_value'>{(poolInfo[0] && poolInfo[0] !=0 )? ethers.utils.parseEther(poolInfo[0]) : 0} </label> */}
+            <label>Reward Expected</label>&nbsp;&nbsp; 
+            <label className='stak_value'>{ (parseFloat(stakingBalance) * parseFloat(poolData[poolId].apy) * parseFloat(poolData[poolId].lock)/365).toFixed(2)} </label>
+            </div>
+            <div>
+            <label>Lock Deadline</label>&nbsp;&nbsp; 
+            <label className='stak_value'>{ timeLock.toString()} </label>
+            </div>
+            <div>
+            <label>Pool Collections</label>&nbsp;&nbsp; 
+            <label className='stak_value'>{ parseFloat(currentPoolSize).toLocaleString()} RCKC</label>
             </div>
             <div>
             <label>Maximum Amount For Staking -</label> &nbsp;&nbsp;
-            <label className='stak_value'>{poolData[poolId].maxStake} </label>            
+            <label className='stak_value'>{poolData[poolId].maxStake} RCKC</label>            
             </div>
           
           </div>
@@ -339,7 +359,7 @@ function App() {
           <div className='detail_box'>
             <h2>Details - {poolData[poolId].name} </h2>
             <p>{poolData[poolId].apy}% APY</p>
-            <p>{poolData[poolId].maxPool} RCKC</p>
+            <p>{poolData[poolId].maxPool} RCKC Max Pool Size</p>
             <p>{poolData[poolId].lock} Days Minimum Duration</p>
             <p>{poolData[poolId].maxStake} RCKC  Maximum Staking</p>
             <p>{poolData[poolId].fee}% Early-Withdrawal Fee</p>
