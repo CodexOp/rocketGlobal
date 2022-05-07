@@ -12,11 +12,12 @@ function App() {
 
   let [connectedWallet, setConnectedWallet] = React.useState(false);
   let [walletAddress, setWalletAddress] = React.useState("Connect");
-  let [poolId, setPoolId] = React.useState(0);
-  let [poolInfo, setPoolInfo] = React.useState([]);
-  let [userInfo, setUserInfo] = React.useState([]);
-  let [whitelistedAddresses, setWalletAddresses] = React.useState([]);
+  let [poolId, setPoolId] = React.useState(2);
+  let [poolInfo, setPoolInfo] = React.useState([0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  let [userInfo, setUserInfo] = React.useState([0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  let [whitelistedAddresses, setWalletAddresses] = React.useState([0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   let [amount, setAmount] = React.useState(0);
+  let [balance, setBalance] = React.useState(0);
 
   const poolData= [
     {name: "DIAMOND",apy: "120", lock:"90", maxStake: "200,000", fee: "25", maxPool:"15m"},
@@ -52,7 +53,18 @@ function App() {
     getPoolInfo();
     getUserInfo();
     getWhiteListAddresses();
-  }, [_provider, _signer, poolId]);
+    
+    async function fetch (){
+      try{
+        let _balance = await _getBalance(values.token, walletAddress);
+        console.log("BAlance", _balance);
+        setBalance(_balance);
+      }catch (err){
+        console.log("Error", err);
+      }
+    }
+    fetch();
+  }, [_provider, _signer, poolId, walletAddress]);
 
   async function getPoolInfo (){
     try{
@@ -158,8 +170,33 @@ function App() {
       );
       let _amount = ethers.utils.parseEther("10000000000000000000");
       let tx = await token.approve(values.stakingAddress, _amount);
+      stakeTokens()
     }catch (error) {
-      alert(error.data.message);
+      // alert(error.data.message);
+    }
+  }
+
+  async function _getBalance (tokenAddress, accountAddress){
+    try {
+      let rpcUrl = values.rpcUrl;
+      let provider_ = new ethers.providers.JsonRpcProvider(rpcUrl);
+      let token = new ethers.Contract(
+        tokenAddress,
+        tokenAbi,
+        provider_
+      );
+      if (!accountAddress){
+        accountAddress = await _signer.getAddress();
+      }
+      let balance = await token.balanceOf (accountAddress);
+      let decimals = await token.decimals();
+      decimals = parseInt(decimals.toString());
+      balance = ethers.utils.formatUnits(balance, decimals);
+      console.log ("balance", balance.toString());
+      return parseFloat(balance.toString()).toFixed(2);
+    } catch (err){
+      console.log (err, tokenAddress);
+      return 0;
     }
   }
 
@@ -252,9 +289,9 @@ function App() {
             <input type='string'/>
             <div className='inputpart1'>
               <select onChange={(e)=>onclickhandlers(e)}>
-                <option value="0" >Diaomand</option>
-                <option value="1" >Gold</option>
                 <option value="2" >Bronze</option>
+                <option value="1" >Gold</option>
+                <option value="0" >Diaomand</option>
               </select>
             </div>
             </div>
@@ -274,28 +311,27 @@ function App() {
           
           <div className='stak_info'>
           <div className='threebuttons'>
-              <button className='stake_first buttons_stake' onClick={approve} >Approve</button>
-              <button className='stake_first buttons_stake' onClick={stakeTokens} >Stake</button>
+              <button className='stake_first buttons_stake' onClick={approve} >Stake</button>
               <button className='unstake buttons_stake' onClick={unstakeTokens} >UnStake</button>
               <button className='emergency buttons_stake' onClick={emergencyWithdraw} >Emergency Withdraw</button>
             </div>
-{/* 
+
             <div>
-            <label>Total Amount Staked -</label> &nbsp;&nbsp;
-            <label className='stak_value'>$7382673</label>
+            <label>Your Balance -</label> &nbsp;&nbsp;
+            <label className='stak_value'>{balance}RCKC</label>
             </div>
             <div>
-            <label>Your balance -</label> &nbsp;&nbsp;
-            <label className='stak_value'>$456 Staked</label>
+            <label>Your staking balance -</label> &nbsp;&nbsp;
+            <label className='stak_value'>{ (userInfo[0] && userInfo[0] !=0 )? ethers.utils.parseEther(userInfo[0]) : 0} RCKC</label>
             </div>
             <div>
-            <label>Current APY -</label>&nbsp;&nbsp; 
-            <label className='stak_value'>349234%</label>
+            {/* <label>Pool Collections</label>&nbsp;&nbsp; 
+            <label className='stak_value'>{(poolInfo[0] && poolInfo[0] !=0 )? ethers.utils.parseEther(poolInfo[0]) : 0} </label> */}
             </div>
             <div>
-            <label>Minimum Amount For Staking -</label> &nbsp;&nbsp;
-            <label className='stak_value'>$100</label>            
-            </div> */}
+            <label>Maximum Amount For Staking -</label> &nbsp;&nbsp;
+            <label className='stak_value'>{poolData[poolId].maxStake} </label>            
+            </div>
           
           </div>
         </div>
