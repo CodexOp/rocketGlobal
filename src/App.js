@@ -28,6 +28,9 @@ function App() {
     {name: "BRONZE",apy: "20", lock:"30", maxStake: "2,000,000", fee: "25", maxPool:"20m"}
   ]
 
+  const logoutstatus = connectedWallet ? 'visible' : 'hidden';
+  
+
   let [_signer, _setSigner]= React.useState(0);
   let [_provider, _setProvider]= React.useState(0);
   const web3ModalRef = React.useRef(); // return the object with key named current
@@ -35,7 +38,7 @@ function App() {
 
   React.useEffect(() => {
     web3ModalRef.current = new Web3Modal({
-      network: "mainnet",
+      network: "rinkeby",
       cacheProvider: false,
       providerOptions: {
         walletconnect: {
@@ -149,6 +152,7 @@ function App() {
       // console.log (error)
     }
   }
+  
 
   async function unstakeTokens () {
     try{
@@ -276,6 +280,7 @@ function App() {
       _setProvider(provider);
     }
   };
+  
 
 
   return (
@@ -283,10 +288,17 @@ function App() {
       <div className='landing'>
         <h2>Rocket Global Staking</h2>
         <p>Get RCKC staking reward when you participate in our high yield staking system.</p>
+
+
         <div className='buttons'>
-        <button onClick={connectWallet} >{(connectedWallet)? <>{walletAddress.slice(0, 6) + "..."}</>
+        <div class="w3-dropdown-hover">
+    <button onClick={connectWallet}  class="w3-button main_button">{(connectedWallet)? <>{walletAddress.slice(0, 6) + "..."}</>
       :
       <>Connect</>}</button>
+    <div class="w3-dropdown-content w3-bar-block w3-border" style={{visibility:`${logoutstatus}`}}>
+      <p className='logout_button'>Logout</p>
+    </div>
+  </div>
         </div>
       </div>
 
@@ -315,7 +327,7 @@ function App() {
             <label>Select Staking Type</label>
             </div>
             <div className='input2'>
-            <input type='string'/>
+            <input type='string' readOnly/>
             <div className='inputpart1'>
               <select onChange={(e)=>onclickhandlers(e)}>
 

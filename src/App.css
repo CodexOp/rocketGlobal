@@ -189,11 +189,30 @@ padding: 20px 10px;
 
 }
 
+.main_button{
+  font-size: 20px;
+}
+
+
+.logout_button{
+  text-align: center;
+  cursor: pointer;
+}
+
+
 .whitelist{
   text-align: center;
   color: #fff;
 
   
+}
+
+
+.w3-dropdown-content{
+  width: 100%;
+}
+.w3-dropdown-content p{
+  color: #000 !important;
 }
 
 .stak_value{
@@ -237,7 +256,6 @@ padding: 20px 10px;
 
 .unstake{
   width: 200px;
-  margin-top: 7px;
   background: #56BC7C;
 }
 
@@ -260,6 +278,8 @@ background: #FF5C5D;
 }
 
 
+
+
   .threebuttons{
     width: 100% !important;
     justify-content: space-between;
@@ -275,9 +295,10 @@ background: #FF5C5D;
 
   }
 
+  
 
     .emergency{
-      width: 49%;
+      width: 100%;
     }
 
   .landing p{
