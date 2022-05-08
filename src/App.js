@@ -305,7 +305,7 @@ function App() {
 
                 <option value="2" >Bronze</option>
                 <option value="1" >Gold</option>
-                <option value="0" >Diaomand</option>
+                <option value="0" >Diamond</option>
               </select>
             </div>
             </div>
