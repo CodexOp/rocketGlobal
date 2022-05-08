@@ -296,7 +296,7 @@ function App() {
       :
       <>Connect</>}</button>
     <div class="w3-dropdown-content w3-bar-block w3-border" style={{visibility:`${logoutstatus}`}}>
-      <p className='logout_button'>Logout</p>
+      <p onClick={connectWallet} className='logout_button'>Logout</p>
     </div>
   </div>
         </div>
