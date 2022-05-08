@@ -18,7 +18,7 @@ function App() {
   let [whitelistedAddresses, setWalletAddresses] = React.useState([0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   let [amount, setAmount] = React.useState(0);
   let [balance, setBalance] = React.useState(0);
-  let [stakingBalance, setStockingBalance] = React.useState(0);
+  let [stakingBalance, setStackingBalance] = React.useState(0);
   let [currentPoolSize, setCurrentPoolSize] = React.useState(0);
   let [timeLock, setTimeLock] = React.useState(0);
 
@@ -35,14 +35,16 @@ function App() {
 
   React.useEffect(() => {
     web3ModalRef.current = new Web3Modal({
-      network: "rinkeby",
+      network: "mainnet",
+      cacheProvider: false,
       providerOptions: {
         walletconnect: {
           package: WalletConnectProvider, // required
           options: {
             rpc: {
               56: values.rpcUrl
-            } // required
+            }, // required,
+            network: "binance"
           }
         }
       },
@@ -101,7 +103,7 @@ function App() {
       let _wallet = _signer.getAddress();      
       let _userInfo = await staking.userInfo( poolId, _wallet);
       console.log ("USER Info: ", _userInfo);
-      setStockingBalance(ethers.utils.formatEther(_userInfo[0]).toString())
+      setStackingBalance(ethers.utils.formatEther(_userInfo[0]).toString())
       setUserInfo(_userInfo);
       let _timestamp = parseInt(_userInfo[1].toString())* 1000;
       let _time = new Date(_timestamp);
@@ -212,6 +214,19 @@ function App() {
     }
   }
 
+  function disconnectWallet () {
+    try{
+      
+      web3ModalRef.current.clearCachedProvider();
+      setConnectedWallet(false);
+      setBalance(0);
+      setStackingBalance(0);
+      setTimeLock(0)
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   const onclickhandlers = (e) => { 
     console.log(e.target.value);
     setPoolId(parseInt(e.target.value));
@@ -225,7 +240,8 @@ function App() {
 
   const connectWallet = async () => {
     try {
-      await getSignerOrProvider(true);
+      if (!connectedWallet) await getSignerOrProvider(true);
+      else disconnectWallet();
     } catch (error) {
       console.log(" error Bhai", error);
     }
@@ -303,7 +319,7 @@ function App() {
               <select onChange={(e)=>onclickhandlers(e)}>
                 <option value="2" >Bronze</option>
                 <option value="1" >Gold</option>
-                <option value="0" >Diaomand</option>
+                <option value="0" >Diamond</option>
               </select>
             </div>
             </div>
@@ -337,15 +353,15 @@ function App() {
             <label className='stak_value'>{ stakingBalance} RCKC</label>
             </div>
             <div>
-            <label>Reward Expected</label>&nbsp;&nbsp; 
+            <label>Reward Expected -</label>&nbsp;&nbsp; 
             <label className='stak_value'>{ (parseFloat(stakingBalance) * parseFloat(poolData[poolId].apy) * parseFloat(poolData[poolId].lock)/365).toFixed(2)} </label>
             </div>
             <div>
-            <label>Lock Deadline</label>&nbsp;&nbsp; 
+            <label>Lock Deadline -</label>&nbsp;&nbsp; 
             <label className='stak_value'>{ timeLock.toString()} </label>
             </div>
             <div>
-            <label>Pool Collections</label>&nbsp;&nbsp; 
+            <label>Pool Collections -</label>&nbsp;&nbsp; 
             <label className='stak_value'>{ parseFloat(currentPoolSize).toLocaleString()} RCKC</label>
             </div>
             <div>
