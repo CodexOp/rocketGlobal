@@ -282,6 +282,7 @@ function App() {
         </div> */}
 
 
+
       {/* Staking Part */}
 
     <div className='stak'>
@@ -301,6 +302,7 @@ function App() {
             <input type='string'/>
             <div className='inputpart1'>
               <select onChange={(e)=>onclickhandlers(e)}>
+
                 <option value="2" >Bronze</option>
                 <option value="1" >Gold</option>
                 <option value="0" >Diaomand</option>
