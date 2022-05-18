@@ -38,7 +38,7 @@ function App() {
 
   React.useEffect(() => {
     web3ModalRef.current = new Web3Modal({
-      network: "rinkeby",
+      network: "binance",
       cacheProvider: false,
       providerOptions: {
         walletconnect: {
@@ -368,7 +368,7 @@ function App() {
             </div>
             <div>
             <label>Reward Expected -</label>&nbsp;&nbsp; 
-            <label className='stak_value'>{ (parseFloat(stakingBalance) * parseFloat(poolData[poolId].apy) * parseFloat(poolData[poolId].lock)/365).toFixed(2)} </label>
+            <label className='stak_value'>{ (parseFloat(stakingBalance) * (1+(parseFloat(poolData[poolId].apy))/100) * parseFloat(poolData[poolId].lock)/365).toFixed(2)} </label>
             </div>
             <div>
             <label>Lock Deadline -</label>&nbsp;&nbsp; 
